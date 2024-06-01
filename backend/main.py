@@ -31,6 +31,7 @@ async def predict(file: UploadFile = File(...)):
     image = image.resize((32, 32)) 
     image = np.transpose(image, (2, 0, 1))  
     resize, draw = image_processing(image)
+    
     image = np.array(image) / 255.0   
     
     image = torch.tensor(image, dtype=torch.float).unsqueeze(0)
@@ -52,6 +53,7 @@ async def predict(file: UploadFile = File(...)):
 
 def buffered(np_img):
     print("np shape", np_img.shape or len(np_img)) 
+    
     np_img = Image.fromarray(np_img.astype('uint8'))
     
     buffered = io.BytesIO()
@@ -72,6 +74,10 @@ def image_processing(ori_image):
 
     for y in range(0, height, cell_size):
         for x in range(0, width, cell_size):
-            cv2.rectangle(draw, (x, y), (x + cell_size, y + cell_size), (0, 0, 0), 1)  # Đặt màu viền là đen
+            cv2.rectangle(draw, (x, y), (x + cell_size, y + cell_size), (0, 0, 0), 1)  
+    resize = np.rot90(resize, k=1, axes=(1,0))
+    resize = np.fliplr(resize)
+    draw = np.rot90(draw, k=1, axes=(1,0))
+    draw = np.fliplr(draw)
     return resize, draw
 

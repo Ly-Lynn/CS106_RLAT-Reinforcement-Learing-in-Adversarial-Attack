@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +11,41 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.bg-purple-bar {
+  --bs-progress-bar-bg: blueviolet  !important;
+}
+
+.bg-green-bar {
+  --bs-progress-bar-bg: rgba(61, 175, 35, 0.937) !important;
+}
+
+.bg-blue-bar {
+  --bs-progress-bar-bg: rgba(83, 69, 237, 0.937) !important;
+}
+
+.bg-red-bar {
+  --bs-progress-bar-bg: rgba(255, 0, 0, 0.937) !important;
+}
+
+.bg-yellow-bar {
+  --bs-progress-bar-bg: yellow !important;
+}
+
+.bg-darkblue-bar {
+  --bs-progress-bar-bg: darkblue !important;
+}
+
+.bg-orange-bar {
+  --bs-progress-bar-bg: orange !important;
+}
+.bg-pink-bar {
+  --bs-progress-bar-bg: deeppink !important;
+}
+.bg-cyan-bar {
+  --bs-progress-bar-bg: cyan !important;
+}
+.bg-choco-bar {
+  --bs-progress-bar-bg: chocolate !important;
 }
