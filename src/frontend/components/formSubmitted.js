@@ -4,7 +4,6 @@ import ImageDisplay from './imageDisplay';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import axios from 'axios';
 
-
 const FormSubmitted = ({image, resize, grid}) => {
     // console.log("image", image)
     const [currentImage, setCurrentImage] = useState(null);
@@ -45,7 +44,6 @@ const FormSubmitted = ({image, resize, grid}) => {
             console.error('Error attack:', error);
         }
     };
-
     return (
         <Container className='d-flex p-4'>
             <div className=''>
