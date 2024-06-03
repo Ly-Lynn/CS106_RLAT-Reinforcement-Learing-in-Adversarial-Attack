@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const ImageDisplay = ({ image, resize, draw }) => {
+const ImageDisplay = ({resize, draw }) => {
     return (
         <div className="container p-2 ps-3">
             {resize && (

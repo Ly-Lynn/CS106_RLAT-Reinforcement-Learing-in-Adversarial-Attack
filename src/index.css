@@ -13,39 +13,39 @@ code {
     monospace;
 }
 
-.bg-purple-bar {
+.bg-6-bar {
   --bs-progress-bar-bg: blueviolet  !important;
 }
 
-.bg-green-bar {
+.bg-3-bar {
   --bs-progress-bar-bg: rgba(61, 175, 35, 0.937) !important;
 }
 
-.bg-blue-bar {
+.bg-4-bar {
   --bs-progress-bar-bg: rgba(83, 69, 237, 0.937) !important;
 }
 
-.bg-red-bar {
+.bg-0-bar {
   --bs-progress-bar-bg: rgba(255, 0, 0, 0.937) !important;
 }
 
-.bg-yellow-bar {
+.bg-2-bar {
   --bs-progress-bar-bg: yellow !important;
 }
 
-.bg-darkblue-bar {
+.bg-5-bar {
   --bs-progress-bar-bg: darkblue !important;
 }
 
-.bg-orange-bar {
+.bg-1-bar {
   --bs-progress-bar-bg: orange !important;
 }
-.bg-pink-bar {
+.bg-7-bar {
   --bs-progress-bar-bg: deeppink !important;
 }
-.bg-cyan-bar {
+.bg-8-bar {
   --bs-progress-bar-bg: cyan !important;
 }
-.bg-choco-bar {
+.bg-9-bar {
   --bs-progress-bar-bg: chocolate !important;
 }
