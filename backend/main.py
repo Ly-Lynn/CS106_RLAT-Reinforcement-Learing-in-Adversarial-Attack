@@ -87,10 +87,11 @@ async def predict(file: UploadFile = File(...)):
 
 
 attack_states = {}
+act_list = []
 
 async def attack_generator(session_id):
     agent, current_state, l2_norm, image_clone, pred, P_pred, attack_state, image, actions_list = attack_states[session_id]
-    print("clone inside", image_clone)
+    # print("clone inside", image_clone)
 
     for step in range(agent.max_iter + 1):
         attack_state["step"] = step
@@ -103,8 +104,12 @@ async def attack_generator(session_id):
             break
 
         action = agent.select_action_model(current_state, "test")
+
+        act_list.append(action)
+        
         image_clone = agent.make_action(image_clone, action)
         l2_norm = agent.cal_l2(image_clone, image)
+        actions_list.append(action)
         P_noise_pred = agent.classifier(image_clone.unsqueeze(0).cuda()).cpu()[0]
         noise_pred = P_noise_pred[torch.argmax(P_noise_pred).item()]
 
@@ -142,6 +147,7 @@ async def attack_generator(session_id):
         features = agent.classifier.features(image_clone.unsqueeze(0).cuda()).view(-1).cpu()
         next_state = torch.cat((features, sensities, torch.flatten(torch.tensor(actions_list))))
         current_state = next_state
+    
 
 @app.post('/attack')
 async def start_attack(request: Request):
@@ -161,22 +167,23 @@ async def start_attack(request: Request):
             _, image_data = image_data.split(',', 1)
         
         decoded_image = base64.b64decode(image_data)
+
         image = Image.open(io.BytesIO(decoded_image))
         agent = Agent(True)
         agent.policy_net.load_state_dict(torch.load(DQN_TRAINED))
         image = transforms.ToTensor()(image).unsqueeze(0)
-        agent.policy_net.eval()
         
         image_clone = image.clone()
         P_GT = agent.classifier(image.cuda()).cpu()
         pred = torch.argmax(P_GT).item()
         P_pred = P_GT[0][pred]
         
-        actions_list = deque([0, 0, 0, 0], maxlen=4)
+        actions_list = deque([0.002, 0.003, 0.004, 0.005], maxlen=4)
         sensities = agent.cal_sensities(image_clone, P_pred, pred)
         features = agent.classifier.features(image_clone.cuda()).view(-1).cpu()
         current_state = torch.cat((features, sensities, torch.flatten(torch.tensor(actions_list))))
         l2_norm = agent.cal_l2(image_clone, image)
+
 
         image_np = image_clone.numpy().squeeze(axis=0)
         # print("np clone", image_np, image_clone,  sep='\n')
