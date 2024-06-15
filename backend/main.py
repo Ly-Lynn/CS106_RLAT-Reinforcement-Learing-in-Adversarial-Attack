@@ -13,10 +13,10 @@ import json
 import asyncio
 from tqdm import tqdm
 from collections import deque
-from adversarial_attack.agent import Agent
-from adversarial_attack.arch import *
-from adversarial_attack.config import *
-from adversarial_attack.dataset import *
+from Adversarial_Attack_deeplearning.agent import Agent
+from Adversarial_Attack_deeplearning.arch import *
+from Adversarial_Attack_deeplearning.config import *
+from Adversarial_Attack_deeplearning.dataset import *
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
@@ -170,7 +170,7 @@ async def start_attack(request: Request):
 
         image = Image.open(io.BytesIO(decoded_image))
         agent = Agent(True)
-        agent.policy_net.load_state_dict(torch.load(DQN_TRAINED))
+        agent.policy_net.load_state_dict(torch.load(DQN_TRIENVONG))
         image = transforms.ToTensor()(image).unsqueeze(0)
         
         image_clone = image.clone()
