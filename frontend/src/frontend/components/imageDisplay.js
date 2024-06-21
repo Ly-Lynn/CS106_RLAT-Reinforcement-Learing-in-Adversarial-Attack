@@ -1,17 +1,17 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const ImageDisplay = ({resize, draw }) => {
+const ImageDisplay = ({img1, img2 }) => {
     return (
         <div className="container p-2 ps-3">
-            {resize && (
+            {img1 && (
                 <div className="col-12 mt-3">
-                    <img src={resize} alt="resizeUploaded" style={{ width: 'auto', height: 'auto' }} />
+                    <img src={img1} alt="img1Uploaded" style={{ width: 'auto', height: 'auto' }} />
                 </div>
             )}
-            {draw && (
+            {img2 && (
                 <div className="col-12 mt-3">
-                    <img src={draw} alt="drawUploaded" style={{ width: 'auto', height: 'auto' }} />
+                    <img src={img2} alt="img2Uploaded" style={{ width: 'auto', height: 'auto' }} />
                 </div>
             )}
         </div>

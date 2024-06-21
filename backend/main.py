@@ -43,8 +43,8 @@ def buffered(np_img):
 def image_processing(ori_image):
     # print("np shape", ori_image.shape or len(ori_image)) 
     ori_image = np.transpose(ori_image, (2, 1, 0))  
-    cell_size = 10
-    grid_size = 32
+    cell_size = 10 * MASK_SIZE # 40
+    grid_size = 32 // MASK_SIZE # 8
 
     width = cell_size * grid_size
     height = cell_size * grid_size
@@ -54,7 +54,7 @@ def image_processing(ori_image):
 
     for y in range(0, height, cell_size):
         for x in range(0, width, cell_size):
-            cv2.rectangle(draw, (x, y), (x + cell_size, y + cell_size), (0, 0, 0), 1)  
+            cv2.rectangle(draw, (x, y), (x + cell_size, y + cell_size), (160, 160, 160), 1)  
     resize = np.rot90(resize, k=1, axes=(1,0))
     resize = np.fliplr(resize)
     draw = np.rot90(draw, k=1, axes=(1,0))
@@ -98,7 +98,7 @@ async def attack_generator(session_id):
         yield f'data: {json.dumps(attack_state)}\n\n'
         
         if step == agent.max_iter:
-            attack_state["success"] = 0
+            attack_state["success"] = '0'
             yield f'data: {json.dumps(attack_state)}\n\n'
             await asyncio.sleep(0.25)
             break
@@ -114,11 +114,15 @@ async def attack_generator(session_id):
         noise_pred = P_noise_pred[torch.argmax(P_noise_pred).item()]
 
         if torch.argmax(P_noise_pred).item() != pred:
-            attack_state["success"] = 1
+            attack_state["success"] = '1'
             np_image = image_clone.numpy()
+            small_attacked = np.transpose(np_image, (2, 1, 0))
+            small_attacked = np.rot90(small_attacked, k=1, axes=(1,0))
+            small_attacked = np.fliplr(small_attacked)
             attack_img, grid = image_processing(np_image)
-            attack_img, grid = buffered(attack_img * 255), buffered(grid * 255)
+            small_attacked, attack_img, grid = buffered(small_attacked * 255), buffered(attack_img * 255), buffered(grid * 255)
             attack_state.update({
+                "small_attacked": small_attacked,
                 "attacked": attack_img,
                 "grid": grid,
                 "prob": P_noise_pred.detach().numpy().tolist(),
@@ -129,11 +133,17 @@ async def attack_generator(session_id):
             await asyncio.sleep(0.25)
             break
         else:
-            attack_state["success"] = -1
+            attack_state["success"] = '-1'
             np_image = image_clone.numpy()
             attack_img, grid = image_processing(np_image)
-            attack_img, grid = buffered(attack_img * 255), buffered(grid * 255)
+            small_attacked = np.transpose(np_image, (2, 1, 0))
+            small_attacked = np.rot90(small_attacked, k=1, axes=(1,0))
+            small_attacked = np.fliplr(small_attacked)
+
+            small_attacked, attack_img, grid = buffered(small_attacked * 255), buffered(attack_img * 255), buffered(grid * 255)
+            # print("smol img", np_image)
             attack_state.update({
+                "small_attacked": small_attacked,
                 "attacked": attack_img,
                 "grid": grid,
                 "prob": P_noise_pred.detach().numpy().tolist(),
@@ -153,9 +163,10 @@ async def attack_generator(session_id):
 async def start_attack(request: Request):
     try:
         attack_state = {
+            "small_attacked": None,
             "attacked": None,
             "grid": None,
-            "success": -1,
+            "success": None,
             "prob": None,
             "pred": None,
             "l2": None,
@@ -186,11 +197,18 @@ async def start_attack(request: Request):
 
 
         image_np = image_clone.numpy().squeeze(axis=0)
-        # print("np clone", image_np, image_clone,  sep='\n')
+        # print("np ", image_np.shape, sep='\n')
         attack_img, grid = image_processing(image_np)
-        attack_img, grid = buffered(attack_img * 255), buffered(grid * 255)
+        # print("attack: ", attack_img.shape)
+
+        small_attacked = np.transpose(image_np, (2, 1, 0))
+        small_attacked = np.rot90(small_attacked, k=1, axes=(1,0))
+        small_attacked = np.fliplr(small_attacked)
+        
+        small_attacked, attack_img, grid = buffered(small_attacked*255), buffered(attack_img * 255), buffered(grid * 255)
         # print("outside attack img", attack_img)
         attack_state.update({
+            "small_attacked": small_attacked,
             "attacked": attack_img,
             "grid": grid,
             "prob": P_GT.detach().numpy().tolist(),
