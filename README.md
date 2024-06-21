@@ -74,3 +74,5 @@ On the right, the probability distribution will update after each iteration. Bel
 #### Failed Attack
 
 ![Attack Fail](figure/failed.png)
+
+
