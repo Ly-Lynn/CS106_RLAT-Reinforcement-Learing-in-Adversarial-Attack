@@ -1,70 +1,78 @@
-# Getting Started with Create React App
+The **.\backend\Adversarial_Attack_deeplearning** folder belongs to my bro TranWoffy, here is his repo: https://github.com/khoa16122004/RLAT-Reinforcement-Learing-in-Adversarial-Attack
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Reinforcement Learing in Adversarial Attack
 
-## Available Scripts
+Welcome to our CS106 project: **Reinforcement Learning in Adversarial Attack** project. 
 
-In the project directory, you can run:
+This repository contains the implementation of adversarial attacks on a classification model using reinforcement learning techniques and the web for demonstration.
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Follow these steps to set up and run the project.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Clone the Repository
 
-### `npm test`
+```sh
+git clone https://github.com/Ly-Lynn/CS106_RLAT-Reinforcement-Learing-in-Adversarial-Attack
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend Setup
 
-### `npm run build`
+Navigate to the backend directory and start the FastAPI server:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```sh
+cd ./backend/
+uvicorn main:app
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Frontend Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Navigate to the frontend directory to build and start the React project:
 
-### `npm run eject`
+```sh
+cd ../frontend/
+npm run build
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Once the project is running, open your browser and go to `http://localhost:3000`.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Demonstration
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Input Image (32x32)
+You can choose your own 32x32 image or get the input image from *.\backend\Adversarial_Attack_deeplearning\Splits*
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+![Input Image](figure/ui.png)
 
-## Learn More
+### Original and Resized Images
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+On the left: the original image (32x32) and its resized version (320x320).  
+On the right: the probability distribution across 10 classes.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![Original and Resized Images](figure/ui2.png)
 
-### Code Splitting
+### Attack Process
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Click the **Attack** button to start the attack process. Three more images will appear on the screen:
+1. Attacked image (32x32)
+2. Attacked image (320x320)
+3. Attacked image with grid visualization
 
-### Analyzing the Bundle Size
+On the right, the probability distribution will update after each iteration. Below this, you will see:
+- The highest probability
+- The L2 norm between the attacked image and the original image
+- The attacking status
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![Attack Process](figure/ui3.png)
 
-### Making a Progressive Web App
+### Attack Results
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### Successful Attack
 
-### Advanced Configuration
+![Attack Successfully](figure/success4.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+#### Failed Attack
 
-### Deployment
+![Attack Fail](figure/failed.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
